@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+    <title>Portfolio</title>
+    
+    <style>
+      /* AI Assistant Floating Button Styles */
+      .ai-assistant-container {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        z-index: 1000;
+      }
+
+      .ai-button {
+        position: relative;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: pulse 2s infinite;
+      }
+
+      .ai-button:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+      }
+
+      .ai-button i {
+        font-size: 32px;
+        color: white;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .ai-tooltip {
+        position: absolute;
+        right: 85px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 25px;
+        white-space: nowrap;
+        font-weight: 600;
+        font-size: 14px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+        animation: slideIn 2s ease-in-out infinite;
+      }
+
+      .ai-tooltip::after {
+        content: '';
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid #764ba2;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
+
+      .ai-assistant-container:hover .ai-tooltip {
+        opacity: 1;
+        right: 90px;
+      }
+
+      .pulse-ring {
+        position: absolute;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        border: 3px solid #667eea;
+        animation: pulseRing 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+      }
+
+      @keyframes pulseRing {
+        0% {
+          transform: scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      @keyframes slideIn {
+        0%, 100% {
+          transform: translateY(-50%) translateX(0);
+        }
+        50% {
+          transform: translateY(-50%) translateX(-5px);
+        }
+      }
+
+      /* Sparkle effect */
+      .sparkle {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: white;
+        border-radius: 50%;
+        animation: sparkleAnimation 1.5s infinite;
+      }
+
+      .sparkle:nth-child(1) {
+        top: 10px;
+        right: 10px;
+        animation-delay: 0s;
+      }
+
+      .sparkle:nth-child(2) {
+        top: 15px;
+        right: 55px;
+        animation-delay: 0.5s;
+      }
+
+      .sparkle:nth-child(3) {
+        top: 50px;
+        right: 15px;
+        animation-delay: 1s;
+      }
+
+      @keyframes sparkleAnimation {
+        0%, 100% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .ai-assistant-container {
+          bottom: 20px;
+          right: 20px;
+        }
+
+        .ai-button {
+          width: 60px;
+          height: 60px;
+        }
+
+        .ai-button i {
+          font-size: 28px;
+        }
+
+        .pulse-ring {
+          width: 60px;
+          height: 60px;
+        }
+
+        .ai-tooltip {
+          font-size: 12px;
+          padding: 10px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="hero" id="main">
+        <nav>
+          <h2 class="logo">
+            <span>H</span><span>a</span><span>m</span><span>z</span><span>a</span><span>t</span>
+            <span style="margin-left:8px"></span>
+            <span>A</span><span>j</span><span>i</span><span>b</span><span>o</span><span>l</span><span>a</span>
+          </h2>
+
+          <ul>
+            <li><a href="#main" target="_blank" rel="noopener noreferrer">Home</a></li>
+            <li><a href="#service" target="_blank" rel="noopener noreferrer">Services</a></li>
+            <li><a href="#about" target="_blank" rel="noopener noreferrer">About me</a></li>
+            <li><a href="#project" target="_blank" rel="noopener noreferrer">Projects</a></li>
+          </ul>
+        </nav>
+
+        <div class="main">
+          <h1>HAMZAT AJIBOLA</h1>
+          <p>
+            I'm a full-stack developer with a passion for learning more everyday.
+            <br />
+            I help build web and mobile applications to make you successful on the long run. I'm a
+            professional <span>full-stack developer.</span>
+          </p>
+          <p>
+            A Highly Trained Professional Who you can Hire for Your Next Job who is devoted to crafting beautiful web experiences
+            focused on simplicity and purpose.
+          </p>
+          <a class="button" href="contact.html" rel="noopener noreferrer">Contact Me</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="about" id="about">
+        <div class="main-text">
+          <img src="page.jpeg" alt="AJ">
+          <div class="about-text">
+            <h2>About Me</h2>
+            <h5>Developer <span>& Designer</span></h5>
+            <p>
+              I am a Full-Stack Developer with a passion for building clean, scalable, and efficient solutions.
+              From crafting interactive user experiences with animations to ensuring secure and scalable server-side logic,
+              I create responsive, end-to-end applications accessible to all users, on any device.
+            </p>
+            <h5>Skills</h5>
+            <ul>
+              <li>Frontend Development</li>
+              <li>Backend Development</li>
+              <li>Software and Application Development</li>
+              <li>Database Management</li>
+              <li>Time Management</li>
+              <li>Problem Solving</li>
+              <li>Team-Work</li>
+            </ul>
+            <a class="button" href="contact.html" rel="noopener noreferrer">Contact Me</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="service">
+        <div class="service">
+          <div class="title">
+            <h2>My Services</h2>
+          </div>
+          <div class="box">
+            <div class="card">
+              <i class="fa-solid fa-code"></i>
+              <h5>Web Development</h5>
+              <div class="pra">
+                <p>
+                  I specialize in HTML, CSS/SCSS, JavaScript, and Bootstrap.
+                  <span class="more-text" style="display: none;">
+                    I build beautiful and responsive interfaces with frameworks like React.js, Angular, and tools like Tailwind to improve UI/UX performance.
+                  </span>
+                </p>
+                <p style="text-align: center">
+                  <button class="button read-more-btn" onclick="toggleReadMore(this)">Read More</button>
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <i class="fa-solid fa-laptop-code"></i>
+              <h5>Back End Development</h5>
+              <div class="pra">
+                <p>
+                  Skilled in backend frameworks and server-side logic.
+                  <span class="more-text" style="display: none;">
+                    I use technologies like Node.js, Python, PHP, Laravel, Firebase, SQL, MongoDB, and ASP.NET to build robust and secure web applications.
+                  </span>
+                </p>
+                <p style="text-align: center">
+                  <button class="button read-more-btn" onclick="toggleReadMore(this)">Read More</button>
+                </p>
+              </div>
+            </div>
+
+            <div class="card">
+              <i class="fa-solid fa-mobile"></i>
+              <h5>Mobile Development</h5>
+              <div class="pra">
+                <p>
+                  I develop full-stack mobile apps using React Native.
+                  <span class="more-text" style="display: none;">
+                    With tools like Node.js, Expo, NoSQL, Firebase, and Git, I build cross-platform mobile apps that are fast, functional, and user-friendly.
+                  </span>
+                </p>
+                <p style="text-align: center">
+                  <button class="button read-more-btn" onclick="toggleReadMore(this)">Read More</button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="project">
+        <div class="projects">
+          <div class="title">
+            <h2>My Projects</h2>
+          </div>
+          <h4>These are the links to some of my projects</h4>
+          <ul>
+            
+            <li><a class="links" href="https://bidoro.africa" target="_blank" rel="noopener noreferrer">Bidoro Waitlist</a></li>
+            <li><a class="links" href="https://guardtroltest.alphatrol.com/" target="_blank" rel="noopener noreferrer">Guardtrol Website</a></li>
+            <li><a class="links" href="https://www.agentlogistic.com/" target="_blank" rel="noopener noreferrer">Agent Logistics</a></li>
+            <li><a class="links" href="https://stafftroltest.alphatrol.com" target="_blank" rel="noopener noreferrer">Stafftrol Website</a></li>
+            <li><a class="links" href="https://expo.dev/accounts/jaybosco/projects/FoodMeApp/builds/decc78fc-9112-4870-9a13-22219d7f8f88" target="_blank" rel="noopener noreferrer">FoodMeApp</a></li>
+          </ul>
+          <p>Always Stay Positive</p>
+        </div>
+      </section>
+
+      <section id="hobbies">
+        <div class="hobbies">
+          <h3>Hobbies</h3>
+          <hr />
+          <ul>
+            <li>* Praying</li>
+            <li>* Coding</li>
+            <li>* Reading</li>
+            <li>* Watching Football</li>
+            <li>* Playing Football</li>
+            <li>* Learning New Things</li>
+            <li>* Helping Others</li>
+          </ul>
+        </div>
+        <div class="priorities">
+          <h3>Priorities</h3>
+          <hr />
+          <ol>
+            <li>* God First</li>
+            <li>* I'm Next</li>
+            <li>* My Career</li>
+            <li>* Work</li>
+            <li>* Education</li>
+            <li>* Family</li>
+            <li>* My Country</li>
+          </ol>
+        </div>
+      </section>
+    </main>
+
+    <section class="quote-section">
+      <div class="quote-text">
+        💯The Power Of Positivity💯<br /><br />
+        🕊️<br /><br />
+        🔥Ire Lo Jasi🔥
+      </div>
+    </section>
+
+    <!-- AI Assistant Floating Button -->
+    <div class="ai-assistant-container">
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="sparkle"></div>
+      <div class="pulse-ring"></div>
+      <a href="https://huggingface.co/spaces/Jay-Bosco/Assistant_AI" target="_blank" rel="noopener noreferrer">
+        <button class="ai-button" aria-label="Ask my AI Assistant">
+          <i class="fa-solid fa-robot"></i>
+        </button>
+      </a>
+      <div class="ai-tooltip">Ask Me Anything! 💬</div>
+    </div>
+
+    <footer>
+      <div class="social">
+        <a href="https://wa.me/+2347010146824" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
+        <a href="https://www.linkedin.com/in/hamzat-ajibola-1a904a239" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-linkedin"></i></a>
+        <a href="https://github.com/Jay-Bosco" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-github"></i></a>
+        <a href="https://codepen.io/AJ-Bosco" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-codepen"></i></a>
+      </div>
+
+      <ul class="list">
+        <li><a href="#main" rel="noopener noreferrer">Home</a></li>
+        <li><a href="#service" rel="noopener noreferrer">Services</a></li>
+        <li><a href="#about" rel="noopener noreferrer">About Me</a></li>
+        <li><a href="#project" rel="noopener noreferrer">Projects</a></li>
+      </ul>
+      <p class="copyright">
+        &copy; Hamzat Ajibola 2022
+      </p>
+    </footer>
+
+    <script>
+      function toggleReadMore(button) {
+        const moreText = button.parentElement.previousElementSibling.querySelector('.more-text');
+        if (moreText.style.display === 'none') {
+          moreText.style.display = 'inline';
+          button.textContent = 'Read Less';
+        } else {
+          moreText.style.display = 'none';
+          button.textContent = 'Read More';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('show');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.2 });
+
+        const elements = document.querySelectorAll('.card, .projects ul li');
+        elements.forEach(el => observer.observe(el));
+      });
+    </script>
+  </body>
+</html>

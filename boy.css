@@ -1,0 +1,386 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0845e0;
+}
+
+body,
+input,
+textarea,
+a {
+  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+#section-wrapper {
+  width: 100%;
+  padding: 10px;
+  height: 100vh;
+}
+
+.box-wrapper {
+  position: relative;
+  display: block;
+  width: 1100px;
+  margin: auto;
+  margin-top: 35px;
+  border-radius: 30px;
+}
+
+.info-wrap {
+  width: 35%;
+  height: 551px;
+  padding: 40px;
+  float: left;
+  display: block;
+  border-radius: 30px 0px 0px 30px;
+  background: linear-gradient(144deg, rgb(0, 0, 0) 0%, rgb(58, 57, 66) 100%);
+  color: #fff;
+}
+
+.info-title {
+  text-align: left;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+}
+
+.info-sub-title {
+  font-size: 18px;
+  font-weight: 300;
+  margin-top: 17px;
+  letter-spacing: 0.5px;
+  line-height: 26px;
+}
+
+.info-details {
+  list-style: none;
+  margin: 60px 0px;
+}
+
+.info-details li {
+  margin-top: 25px;
+  font-size: 18px;
+  color: #fff;
+}
+
+.info-details li i {
+  background: #ea1538;
+  padding: 12px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.info-details li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.info-details li a:hover {
+  color: #ea1538;
+}
+
+.social-icons {
+  list-style: none;
+  text-align: center;
+  margin: 20px 0px;
+}
+
+.social-icons li {
+  display: inline-block;
+}
+
+.social-icons li i {
+  background: #ea1538;
+  color: wheat;
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 22%;
+  margin: 0px 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.social-icons li i:hover {
+  color: black;
+  background: transparent;
+  border: 2px solid #ea1538;
+  transform: translateY(-10px);
+}
+
+.form-wrap {
+  width: 65%;
+  height: 551px;
+  float: right;
+  padding: 40px 25px 35px 25px;
+  border-radius: 0px 30px 30px 0px;
+  background: #ecf0f3;
+}
+
+.form-title {
+  text-align: left;
+  margin-left: 23px;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+}
+
+.form-fields {
+  display: table;
+  width: 100%;
+  padding: 15px 5px 5px 15px;
+}
+
+.form-fields input,
+.form-fields textarea {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 18px;
+  color: #555;
+  padding: 20px 10px 20px 5px;
+  width: 100%;
+}
+
+.form-fields textarea {
+  height: 150px;
+  resize: none;
+}
+
+.form-group {
+  width: 46%;
+  float: left;
+  padding: 0px 25px;
+  margin: 14px 12px;
+  border-radius: 25px;
+  box-shadow: inset 8px 8px 8px #cbc3d1, inset -8px -8px 8px #ffffff;
+}
+
+.form-fields .form-group:last-child {
+  width: 96%;
+}
+
+.submit-button {
+  width: 96%;
+  height: 60px;
+  margin: 0px 12px;
+  border-radius: 30px;
+  font-size: 20px;
+  font-weight: 700;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  text-align: center;
+  background: #ea1538;
+  box-shadow: 3px 3px 8px #b1b1b1, -3px -3px 8px #ffffff;
+  transition: 0.5s;
+}
+
+.submit-button:hover {
+  background: #31279d;
+}
+
+/* === DARK MODE === */
+body.dark-mode {
+  background-color: #111 !important;
+  color: #eee;
+}
+
+body.dark-mode .form-wrap {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  color: #fff;
+  border: none;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus {
+  outline: none;
+}
+
+body.dark-mode .form-group {
+  box-shadow: 
+    inset 8px 8px 8px #0a0a0a, 
+    inset -8px -8px 8px #2a2a2a, 
+    inset 0 0 30px rgba(255, 255, 255, 0.25),
+    0 0 0 2px rgba(255, 255, 255, 0.3);
+  border: none;
+}
+
+body.dark-mode .submit-button {
+  box-shadow: 3px 3px 8px #0a0a0a, -3px -3px 8px #2a2a2a;
+}
+
+body.dark-mode .info-wrap a,
+body.dark-mode .info-wrap span {
+  color: #ccc;
+}
+
+body.dark-mode .form-title {
+  color: #eee;
+}
+
+/* Toggle button */
+.toggle-dark {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  padding: 8px 14px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  z-index: 999;
+  transition: background 0.3s ease;
+}
+
+.toggle-dark:hover {
+  background-color: #ea1538;
+}
+
+/* Animation */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === RESPONSIVE DESIGN === */
+@media only screen and (max-width: 767px) {
+  .box-wrapper {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .info-wrap,
+  .form-wrap {
+    width: 100%;
+    height: inherit;
+    float: none;
+  }
+
+  .info-wrap {
+    border-radius: 30px 30px 0px 0px;
+    padding: 30px;
+  }
+
+  .form-wrap {
+    border-radius: 0px 0px 30px 30px;
+    padding: 30px 20px 25px 20px;
+  }
+
+  .form-group {
+    width: 46%;
+    float: left;
+    padding: 0px 25px;
+    margin: 14px 12px;
+    border-radius: 25px;
+    /* Maintain the same neumorphic shadow as desktop */
+    box-shadow: inset 8px 8px 8px #cbc3d1, inset -8px -8px 8px #ffffff;
+  }
+
+  /* Dark mode form groups on mobile maintain consistency */
+  body.dark-mode .form-group {
+    box-shadow: 
+      inset 8px 8px 8px #0a0a0a, 
+      inset -8px -8px 8px #2a2a2a, 
+      inset 0 0 30px rgba(255, 255, 255, 0.25),
+      0 0 0 2px rgba(255, 255, 255, 0.3);
+    border: none;
+  }
+
+  .form-fields .form-group:last-child,
+  .submit-button {
+    width: 96%;
+    margin: 10px 12px;
+  }
+
+  /* Ensure dark mode styling consistency on mobile */
+  body.dark-mode .form-wrap {
+    background-color: #1e1e1e;
+  }
+
+  body.dark-mode .form-title {
+    color: #eee;
+  }
+
+  body.dark-mode input,
+  body.dark-mode textarea {
+    color: #fff;
+  }
+
+  body.dark-mode .submit-button {
+    box-shadow: 3px 3px 8px #0a0a0a, -3px -3px 8px #2a2a2a;
+  }
+
+  /* Adjust font sizes slightly for mobile readability */
+  .info-title,
+  .form-title {
+    font-size: 24px;
+  }
+
+  .info-sub-title {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .info-details li {
+    font-size: 16px;
+  }
+
+  .form-fields input,
+  .form-fields textarea {
+    font-size: 16px;
+  }
+
+  .submit-button {
+    font-size: 18px;
+  }
+}
+
+/* === TABLET RESPONSIVENESS === */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .box-wrapper {
+    width: 90%;
+    max-width: 900px;
+  }
+
+  .info-wrap {
+    padding: 35px;
+  }
+
+  .form-wrap {
+    padding: 35px 20px 30px 20px;
+  }
+
+  .form-group {
+    width: 47%;
+    margin: 12px 8px;
+  }
+
+  .form-fields .form-group:last-child,
+  .submit-button {
+    width: 97%;
+    margin: 10px 8px;
+  }
+}

@@ -1,0 +1,75 @@
+<!-- thank-you.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Thank You</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0845e0, #2b8edb);
+      color: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .message-box {
+      background: #fff;
+      color: #0845e0;
+      padding: 50px 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      max-width: 500px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .message-box h1 {
+      font-size: 2.2rem;
+      margin-bottom: 15px;
+    }
+
+    .message-box p {
+      font-size: 1.1rem;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 24px;
+      text-decoration: none;
+      background-color: #0845e0;
+      color: white;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    a:hover {
+      background-color: #062fc0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="message-box">
+    <h1>✅ Thank You!</h1>
+    <p>Your message has been sent successfully.</p>
+    <a href="index.html">⬅ Go Back</a>
+  </div>
+</body>
+</html>
