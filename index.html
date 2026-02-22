@@ -17,7 +17,336 @@
     <title>Portfolio</title>
     
     <style>
-      /* AI Assistant Floating Button Styles */
+      /* ========== Project Cards Grid ========== */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 28px;
+        padding: 30px 0;
+        max-width: 1140px;
+        margin: 0 auto;
+      }
+
+      .project-card {
+        background: #191919;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      .project-card.show {
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 40px rgba(234, 21, 56, 0.2);
+      }
+
+      /* ========== Image Carousel ========== */
+      .project-carousel {
+        position: relative;
+        width: 100%;
+        height: 210px;
+        overflow: hidden;
+        background: #111;
+      }
+
+      .carousel-track {
+        display: flex;
+        height: 100%;
+        transition: transform 0.4s ease;
+        position: relative;
+        z-index: 1;
+      }
+
+      .carousel-track img {
+        min-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        flex-shrink: 0;
+        cursor: pointer;
+      }
+
+      /* Carousel Arrows */
+      .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.55);
+        color: white;
+        border: none;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        font-size: 14px;
+        cursor: pointer;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease, background 0.3s ease;
+      }
+
+      .project-carousel:hover .carousel-btn {
+        opacity: 1;
+      }
+
+      .carousel-btn:hover {
+        background: rgba(234, 21, 56, 0.8);
+      }
+
+      .carousel-btn.prev { left: 10px; }
+      .carousel-btn.next { right: 10px; }
+
+      /* Carousel Dots */
+      .carousel-dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 6px;
+        z-index: 4;
+      }
+
+      .carousel-dots span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: background 0.3s ease, transform 0.3s ease;
+      }
+
+      .carousel-dots span.active {
+        background: #ea1538;
+        transform: scale(1.25);
+      }
+
+      /* Hover overlay */
+      .project-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(110, 9, 26, 0.75);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 16px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: 2;
+        pointer-events: none;
+      }
+
+      .project-card:hover .project-overlay {
+        opacity: 1;
+      }
+
+      .project-overlay a {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        color: #191919;
+        padding: 10px 24px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        transform: translateY(10px);
+        transition: transform 0.3s ease, background 0.3s ease;
+        pointer-events: auto;
+      }
+
+      .project-card:hover .project-overlay a {
+        transform: translateY(0);
+      }
+
+      .project-overlay a:hover {
+        background: wheat;
+      }
+
+      /* Card body */
+      .project-card-body {
+        padding: 20px 24px 24px;
+      }
+
+      .project-card-body h5 {
+        font-size: 1.1rem;
+        color: wheat;
+        margin: 0 0 8px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      .project-card-body p {
+        font-size: 0.85rem;
+        color: #fcfcfc99;
+        line-height: 1.65;
+        margin: 0 0 16px;
+        font-weight: 400;
+      }
+
+      .project-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .project-tags span {
+        background: rgba(234, 21, 56, 0.15);
+        color: #ea1538;
+        padding: 4px 14px;
+        border-radius: 20px;
+        font-size: 0.73rem;
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+
+      /* ========== Responsive ========== */
+      @media (max-width: 768px) {
+        .projects-grid {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          padding: 20px 10px;
+        }
+        .project-carousel {
+          height: 180px;
+        }
+        .carousel-btn {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .projects-grid {
+          padding: 15px 5px;
+        }
+        .project-carousel {
+          height: 160px;
+        }
+        .project-card-body {
+          padding: 16px 18px 20px;
+        }
+      }
+
+      /* ========== Lightbox Modal ========== */
+      .lightbox-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.92);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .lightbox-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .lightbox-overlay.active .lightbox-img {
+        transform: scale(1);
+      }
+
+      .lightbox-img {
+        max-width: 90vw;
+        max-height: 85vh;
+        object-fit: contain;
+        border-radius: 8px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+        user-select: none;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 20px;
+        right: 25px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 32px;
+        cursor: pointer;
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background 0.3s ease;
+        z-index: 2001;
+      }
+
+      .lightbox-close:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      .lightbox-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.3s ease;
+        z-index: 2001;
+      }
+
+      .lightbox-nav:hover {
+        background: rgba(234, 21, 56, 0.6);
+      }
+
+      .lightbox-nav.lb-prev { left: 20px; }
+      .lightbox-nav.lb-next { right: 20px; }
+
+      .lightbox-counter {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      @media (max-width: 768px) {
+        .lightbox-nav {
+          width: 40px;
+          height: 40px;
+          font-size: 16px;
+        }
+        .lightbox-nav.lb-prev { left: 10px; }
+        .lightbox-nav.lb-next { right: 10px; }
+        .lightbox-close { top: 12px; right: 12px; }
+      }
+
+      /* ========== AI Assistant Floating Button ========== */
       .ai-assistant-container {
         position: fixed;
         bottom: 30px;
@@ -99,44 +428,25 @@
       }
 
       @keyframes pulse {
-        0%, 100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
       }
 
       @keyframes pulseRing {
-        0% {
-          transform: scale(1);
-          opacity: 1;
-        }
-        100% {
-          transform: scale(1.5);
-          opacity: 0;
-        }
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(1.5); opacity: 0; }
       }
 
       @keyframes float {
-        0%, 100% {
-          transform: translateY(0px);
-        }
-        50% {
-          transform: translateY(-5px);
-        }
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
       }
 
       @keyframes slideIn {
-        0%, 100% {
-          transform: translateY(-50%) translateX(0);
-        }
-        50% {
-          transform: translateY(-50%) translateX(-5px);
-        }
+        0%, 100% { transform: translateY(-50%) translateX(0); }
+        50% { transform: translateY(-50%) translateX(-5px); }
       }
 
-      /* Sparkle effect */
       .sparkle {
         position: absolute;
         width: 8px;
@@ -146,60 +456,21 @@
         animation: sparkleAnimation 1.5s infinite;
       }
 
-      .sparkle:nth-child(1) {
-        top: 10px;
-        right: 10px;
-        animation-delay: 0s;
-      }
-
-      .sparkle:nth-child(2) {
-        top: 15px;
-        right: 55px;
-        animation-delay: 0.5s;
-      }
-
-      .sparkle:nth-child(3) {
-        top: 50px;
-        right: 15px;
-        animation-delay: 1s;
-      }
+      .sparkle:nth-child(1) { top: 10px; right: 10px; animation-delay: 0s; }
+      .sparkle:nth-child(2) { top: 15px; right: 55px; animation-delay: 0.5s; }
+      .sparkle:nth-child(3) { top: 50px; right: 15px; animation-delay: 1s; }
 
       @keyframes sparkleAnimation {
-        0%, 100% {
-          opacity: 0;
-          transform: scale(0);
-        }
-        50% {
-          opacity: 1;
-          transform: scale(1);
-        }
+        0%, 100% { opacity: 0; transform: scale(0); }
+        50% { opacity: 1; transform: scale(1); }
       }
 
-      /* Responsive adjustments */
       @media (max-width: 768px) {
-        .ai-assistant-container {
-          bottom: 20px;
-          right: 20px;
-        }
-
-        .ai-button {
-          width: 60px;
-          height: 60px;
-        }
-
-        .ai-button i {
-          font-size: 28px;
-        }
-
-        .pulse-ring {
-          width: 60px;
-          height: 60px;
-        }
-
-        .ai-tooltip {
-          font-size: 12px;
-          padding: 10px 16px;
-        }
+        .ai-assistant-container { bottom: 20px; right: 20px; }
+        .ai-button { width: 60px; height: 60px; }
+        .ai-button i { font-size: 28px; }
+        .pulse-ring { width: 60px; height: 60px; }
+        .ai-tooltip { font-size: 12px; padding: 10px 16px; }
       }
     </style>
   </head>
@@ -322,24 +593,249 @@
         </div>
       </section>
 
+      <!-- ==================== PROJECT SECTION WITH CAROUSEL CARDS ==================== -->
       <section id="project">
         <div class="projects">
           <div class="title">
             <h2>My Projects</h2>
           </div>
-          <h4>These are the links to some of my projects</h4>
-          <ul>
-            
-            <li><a class="links" href="https://bidoro.africa" target="_blank" rel="noopener noreferrer">Bidoro Waitlist</a></li>
-            <li><a class="links" href="https://staging.bidoro.africa/" target="_blank" rel="noopener noreferrer">Bidoro Marketplace</a></li>
-            <li><a class="links" href="https://guardtroltest.alphatrol.com/" target="_blank" rel="noopener noreferrer">Guardtrol Website</a></li>
-            <li><a class="links" href="https://www.agentlogistic.com/" target="_blank" rel="noopener noreferrer">Agent Logistics</a></li>
-            <li><a class="links" href="https://stafftroltest.alphatrol.com" target="_blank" rel="noopener noreferrer">Stafftrol Website</a></li>
-            <li><a class="links" href="https://expo.dev/accounts/jaybosco/projects/FoodMeApp/builds/decc78fc-9112-4870-9a13-22219d7f8f88" target="_blank" rel="noopener noreferrer">FoodMeApp</a></li>
-          </ul>
+
+          <div class="projects-grid">
+
+            <!-- Project 1: Bidoro Waitlist (5 images) -->
+            <div class="project-card">
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <img src="images/bidoro-waitlist-1.png" alt="Bidoro Waitlist screenshot 1" />
+                  <img src="images/bidoro-waitlist-2.png" alt="Bidoro Waitlist screenshot 2" />
+                  <img src="images/bidoro-waitlist-3.png" alt="Bidoro Waitlist screenshot 3" />
+                  <img src="images/bidoro-waitlist-4.png" alt="Bidoro Waitlist screenshot 4" />
+                  <img src="images/bidoro-waitlist-5.png" alt="Bidoro Waitlist screenshot 5" />
+                </div>
+                <button class="carousel-btn prev" onclick="slideCarousel(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next" onclick="slideCarousel(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots">
+                  <span class="active" onclick="goToSlide(this, 0)"></span>
+                  <span onclick="goToSlide(this, 1)"></span>
+                  <span onclick="goToSlide(this, 2)"></span>
+                  <span onclick="goToSlide(this, 3)"></span>
+                  <span onclick="goToSlide(this, 4)"></span>
+                </div>
+                <div class="project-overlay">
+                  <a href="https://bidoro.africa" target="_blank" rel="noopener noreferrer">
+                    View Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="project-card-body">
+                <h5>Bidoro Waitlist</h5>
+                <p>Landing page and waitlist signup for the Bidoro marketplace platform.</p>
+                <div class="project-tags">
+                  <span>Next.js</span>
+                  <span>Node.js</span>
+                  <span>Express</span>
+                  <span>Supabase</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 2: Bidoro Marketplace (6 images) -->
+            <div class="project-card">
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <img src="images/bidoro-marketplace-1.png" alt="Bidoro Marketplace screenshot 1" />
+                  <img src="images/bidoro-marketplace-2.png" alt="Bidoro Marketplace screenshot 2" />
+                  <img src="images/bidoro-marketplace-3.png" alt="Bidoro Marketplace screenshot 3" />
+                  <img src="images/bidoro-marketplace-4.png" alt="Bidoro Marketplace screenshot 4" />
+                  <img src="images/bidoro-marketplace-5.png" alt="Bidoro Marketplace screenshot 5" />
+                  <img src="images/bidoro-marketplace-6.png" alt="Bidoro Marketplace screenshot 6" />
+                </div>
+                <button class="carousel-btn prev" onclick="slideCarousel(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next" onclick="slideCarousel(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots">
+                  <span class="active" onclick="goToSlide(this, 0)"></span>
+                  <span onclick="goToSlide(this, 1)"></span>
+                  <span onclick="goToSlide(this, 2)"></span>
+                  <span onclick="goToSlide(this, 3)"></span>
+                  <span onclick="goToSlide(this, 4)"></span>
+                  <span onclick="goToSlide(this, 5)"></span>
+                </div>
+                <div class="project-overlay">
+                  <a href="https://staging.bidoro.africa/" target="_blank" rel="noopener noreferrer">
+                    View Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="project-card-body">
+                <h5>Bidoro Marketplace</h5>
+                <p>Full-featured marketplace connecting buyers and sellers across Africa.</p>
+                <div class="project-tags">
+                  <span>Next.js</span>
+                  <span>Node.js</span>
+                  <span>Express</span>
+                  <span>Supabase</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 3: Guardtrol (6 images) -->
+            <div class="project-card">
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <img src="images/guardtrol-1.png" alt="Guardtrol screenshot 1" />
+                  <img src="images/guardtrol-2.png" alt="Guardtrol screenshot 2" />
+                  <img src="images/guardtrol-3.png" alt="Guardtrol screenshot 3" />
+                  <img src="images/guardtrol-4.png" alt="Guardtrol screenshot 4" />
+                  <img src="images/guardtrol-5.png" alt="Guardtrol screenshot 5" />
+                  <img src="images/guardtrol-6.png" alt="Guardtrol screenshot 6" />
+                </div>
+                <button class="carousel-btn prev" onclick="slideCarousel(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next" onclick="slideCarousel(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots">
+                  <span class="active" onclick="goToSlide(this, 0)"></span>
+                  <span onclick="goToSlide(this, 1)"></span>
+                  <span onclick="goToSlide(this, 2)"></span>
+                  <span onclick="goToSlide(this, 3)"></span>
+                  <span onclick="goToSlide(this, 4)"></span>
+                  <span onclick="goToSlide(this, 5)"></span>
+                </div>
+                <div class="project-overlay">
+                  <a href="https://guardtroltest.alphatrol.com/" target="_blank" rel="noopener noreferrer">
+                    View Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="project-card-body">
+                <h5>Guardtrol Website</h5>
+                <p>Security management and tracking dashboard for guard patrol operations.</p>
+                <div class="project-tags">
+                  <span>MongoDB</span>
+                  <span>Express</span>
+                  <span>React</span>
+                  <span>Node.js</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 4: Agent Logistics (6 images) -->
+            <div class="project-card">
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <img src="images/agent-logistics-1.png" alt="Agent Logistics screenshot 1" />
+                  <img src="images/agent-logistics-2.png" alt="Agent Logistics screenshot 2" />
+                  <img src="images/agent-logistics-3.png" alt="Agent Logistics screenshot 3" />
+                  <img src="images/agent-logistics-4.png" alt="Agent Logistics screenshot 4" />
+                  <img src="images/agent-logistics-5.png" alt="Agent Logistics screenshot 5" />
+                  <img src="images/agent-logistics-6.png" alt="Agent Logistics screenshot 6" />
+                </div>
+                <button class="carousel-btn prev" onclick="slideCarousel(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next" onclick="slideCarousel(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots">
+                  <span class="active" onclick="goToSlide(this, 0)"></span>
+                  <span onclick="goToSlide(this, 1)"></span>
+                  <span onclick="goToSlide(this, 2)"></span>
+                  <span onclick="goToSlide(this, 3)"></span>
+                  <span onclick="goToSlide(this, 4)"></span>
+                  <span onclick="goToSlide(this, 5)"></span>
+                </div>
+                <div class="project-overlay">
+                  <a href="https://www.agentlogistic.com/" target="_blank" rel="noopener noreferrer">
+                    View Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="project-card-body">
+                <h5>Agent Logistics</h5>
+                <p>Specialized vehicle transport and haulage platform with real-time GPS tracking.</p>
+                <div class="project-tags">
+                  <span>PHP</span>
+                  <span>HTML</span>
+                  <span>CSS</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 5: Stafftrol (6 images) -->
+            <div class="project-card">
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <img src="images/stafftrol-1.png" alt="Stafftrol screenshot 1" />
+                  <img src="images/stafftrol-2.png" alt="Stafftrol screenshot 2" />
+                  <img src="images/stafftrol-3.png" alt="Stafftrol screenshot 3" />
+                  <img src="images/stafftrol-4.png" alt="Stafftrol screenshot 4" />
+                  <img src="images/stafftrol-5.png" alt="Stafftrol screenshot 5" />
+                  <img src="images/stafftrol-6.png" alt="Stafftrol screenshot 6" />
+                </div>
+                <button class="carousel-btn prev" onclick="slideCarousel(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next" onclick="slideCarousel(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots">
+                  <span class="active" onclick="goToSlide(this, 0)"></span>
+                  <span onclick="goToSlide(this, 1)"></span>
+                  <span onclick="goToSlide(this, 2)"></span>
+                  <span onclick="goToSlide(this, 3)"></span>
+                  <span onclick="goToSlide(this, 4)"></span>
+                  <span onclick="goToSlide(this, 5)"></span>
+                </div>
+                <div class="project-overlay">
+                  <a href="https://stafftroltest.alphatrol.com" target="_blank" rel="noopener noreferrer">
+                    View Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="project-card-body">
+                <h5>Stafftrol Website</h5>
+                <p>Staff management dashboard with attendance, payroll, and workforce tracking.</p>
+                <div class="project-tags">
+                  <span>MongoDB</span>
+                  <span>Express</span>
+                  <span>React</span>
+                  <span>Node.js</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Project 6: FoodMeApp (5 images) -->
+            <div class="project-card">
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <img src="images/foodmeapp-1.png" alt="FoodMeApp screenshot 1" />
+                  <img src="images/foodmeapp-2.png" alt="FoodMeApp screenshot 2" />
+                  <img src="images/foodmeapp-3.png" alt="FoodMeApp screenshot 3" />
+                  <img src="images/foodmeapp-4.png" alt="FoodMeApp screenshot 4" />
+                  <img src="images/foodmeapp-5.png" alt="FoodMeApp screenshot 5" />
+                </div>
+                <button class="carousel-btn prev" onclick="slideCarousel(this, -1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next" onclick="slideCarousel(this, 1)"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots">
+                  <span class="active" onclick="goToSlide(this, 0)"></span>
+                  <span onclick="goToSlide(this, 1)"></span>
+                  <span onclick="goToSlide(this, 2)"></span>
+                  <span onclick="goToSlide(this, 3)"></span>
+                  <span onclick="goToSlide(this, 4)"></span>
+                </div>
+                <div class="project-overlay">
+                  <a href="https://expo.dev/accounts/jaybosco/projects/FoodMeApp/builds/decc78fc-9112-4870-9a13-22219d7f8f88" target="_blank" rel="noopener noreferrer">
+                    View Live <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="project-card-body">
+                <h5>FoodMeApp</h5>
+                <p>Cross-platform mobile health and meal tracking app with water and goal features.</p>
+                <div class="project-tags">
+                  <span>React Native</span>
+                  <span>Expo</span>
+                  <span>Firebase</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
           <p>Always Stay Positive</p>
         </div>
       </section>
+      <!-- ==================== END PROJECT SECTION ==================== -->
 
       <section id="hobbies">
         <div class="hobbies">
@@ -393,6 +889,15 @@
       <div class="ai-tooltip">Ask Me Anything! 💬</div>
     </div>
 
+    <!-- Lightbox Modal -->
+    <div class="lightbox-overlay" id="lightbox">
+      <button class="lightbox-close" onclick="closeLightbox()"><i class="fa-solid fa-xmark"></i></button>
+      <button class="lightbox-nav lb-prev" onclick="lightboxNav(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+      <img class="lightbox-img" id="lightboxImg" src="" alt="Project screenshot" />
+      <button class="lightbox-nav lb-next" onclick="lightboxNav(1)"><i class="fa-solid fa-chevron-right"></i></button>
+      <div class="lightbox-counter" id="lightboxCounter"></div>
+    </div>
+
     <footer>
       <div class="social">
         <a href="https://wa.me/+2347010146824" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i></a>
@@ -424,6 +929,111 @@
         }
       }
 
+      /* ========== Carousel Logic ========== */
+      function getCarouselState(el) {
+        const carousel = el.closest('.project-carousel');
+        const track = carousel.querySelector('.carousel-track');
+        const totalSlides = track.querySelectorAll('img').length;
+        const currentIndex = parseInt(track.dataset.index || '0');
+        const dots = carousel.querySelectorAll('.carousel-dots span');
+        return { carousel, track, totalSlides, currentIndex, dots };
+      }
+
+      function updateCarousel(track, index, dots) {
+        track.style.transform = `translateX(-${index * 100}%)`;
+        track.dataset.index = index;
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === index);
+        });
+      }
+
+      function slideCarousel(btn, direction) {
+        const { track, totalSlides, currentIndex, dots } = getCarouselState(btn);
+        let newIndex = currentIndex + direction;
+        if (newIndex < 0) newIndex = totalSlides - 1;
+        if (newIndex >= totalSlides) newIndex = 0;
+        updateCarousel(track, newIndex, dots);
+      }
+
+      function goToSlide(dot, index) {
+        const { track, dots } = getCarouselState(dot);
+        updateCarousel(track, index, dots);
+      }
+
+      /* ========== Lightbox Logic ========== */
+      let lightboxImages = [];
+      let lightboxIndex = 0;
+
+      function openLightbox(img) {
+        const carousel = img.closest('.project-carousel');
+        const allImages = carousel.querySelectorAll('.carousel-track img');
+        lightboxImages = Array.from(allImages).map(i => i.src);
+        lightboxIndex = Array.from(allImages).indexOf(img);
+
+        const overlay = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lightboxImg');
+        lbImg.src = lightboxImages[lightboxIndex];
+        updateLightboxCounter();
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        document.getElementById('lightbox').classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function lightboxNav(direction) {
+        lightboxIndex += direction;
+        if (lightboxIndex < 0) lightboxIndex = lightboxImages.length - 1;
+        if (lightboxIndex >= lightboxImages.length) lightboxIndex = 0;
+        document.getElementById('lightboxImg').src = lightboxImages[lightboxIndex];
+        updateLightboxCounter();
+      }
+
+      function updateLightboxCounter() {
+        document.getElementById('lightboxCounter').textContent =
+          `${lightboxIndex + 1} / ${lightboxImages.length}`;
+      }
+
+      // Close lightbox on overlay click (not on image/buttons)
+      document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', function(e) {
+        const overlay = document.getElementById('lightbox');
+        if (!overlay.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') lightboxNav(-1);
+        if (e.key === 'ArrowRight') lightboxNav(1);
+      });
+
+      // Touch swipe for lightbox
+      (function() {
+        let touchStartX = 0;
+        const overlay = document.getElementById('lightbox');
+        overlay.addEventListener('touchstart', function(e) {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        overlay.addEventListener('touchend', function(e) {
+          const diff = e.changedTouches[0].screenX - touchStartX;
+          if (Math.abs(diff) > 50) {
+            if (diff > 0) lightboxNav(-1);
+            else lightboxNav(1);
+          }
+        }, { passive: true });
+      })();
+
+      // Attach click listeners to all carousel images
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.carousel-track img').forEach(img => {
+          img.addEventListener('click', () => openLightbox(img));
+        });
+      });
+
+      /* ========== Scroll Animations ========== */
       document.addEventListener('DOMContentLoaded', () => {
         const observer = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
@@ -434,8 +1044,11 @@
           });
         }, { threshold: 0.2 });
 
-        const elements = document.querySelectorAll('.card, .projects ul li');
-        elements.forEach(el => observer.observe(el));
+        const elements = document.querySelectorAll('.card, .project-card');
+        elements.forEach((el, index) => {
+          el.style.transitionDelay = `${index * 0.1}s`;
+          observer.observe(el);
+        });
       });
     </script>
   </body>
